@@ -26,6 +26,18 @@ def create_task():
 @tasks_bp.get("")
 def get_tasks():
     tasks = Task.query.all()
+    sort_param = request.args.get("sort")
+    
+    sort_options ={
+        "asc": Task.title.asc(),
+        "desc": Task.title.desc()
+    }
+    
+    query = db.select(Task)
+    if sort_param in sort_options:
+        query= query.order_by(sort_options[sort_param])
+        
+    tasks = db.session.scalars(query).all()
     return [task.to_dict() for task in tasks], 200
 
 @tasks_bp.get("/<task_id>")
