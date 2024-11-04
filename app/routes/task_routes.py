@@ -1,6 +1,7 @@
-from flask import Blueprint, request, abort, make_response, Response
+from flask import Blueprint, request, abort, make_response, Response, json
 from app import db
 from app.models.task import Task
+from datetime import datetime
 
 tasks_bp = Blueprint("tasks_bp", __name__, url_prefix="/tasks")  # Note: task_bp not taks_bp
 
@@ -43,13 +44,39 @@ def get_tasks():
 @tasks_bp.get("/<task_id>")
 def get_task(task_id):
     task = Task.query.get(task_id)
-    
+
     if not task:
         return {"message": f"task {task_id} not found"}, 404
 
-        
     return {"task": task.to_dict()}, 200  
 
+
+@tasks_bp.patch("/<task_id>/mark_complete")
+def mark_complete(task_id):
+    task = Task.query.get(int(task_id))
+    
+    if not task:
+        return {"message": f"Task {task_id} not found"}, 404
+    
+    task.completed_at = datetime.now()
+    task.is_complete = True
+    db.session.commit()
+    
+    return {"task": task.to_dict()}, 200
+
+@tasks_bp.patch("/<task_id>/mark_incomplete")
+def mark_incomplete(task_id):
+    task = Task.query.get(int(task_id))
+    
+    if not task:
+        return {"message": f"Task {task_id} not found"}, 404
+    
+    task.completed_at = None
+    task.is_complete = False
+    db.session.commit()
+    
+    return {"task": task.to_dict()}, 200
+    
 @tasks_bp.put("/<task_id>")
 def update_task(task_id):
     task = Task.query.get(task_id)

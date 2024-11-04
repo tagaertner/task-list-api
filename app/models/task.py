@@ -9,23 +9,20 @@ class Task(db.Model):
     title: Mapped[str]
     description: Mapped[str]
     completed_at: Mapped[datetime] = mapped_column(nullable=True, default=None)
-    is_complete: Mapped[bool] = mapped_column(nullable=False, default=False)
+    is_complete: Mapped[bool] = mapped_column(nullable=True) 
+    # (nullable=False, default=False)
+    
+
     
     def to_dict(self):
     # Return only the fields expected by the test
+        is_complete_value = False if self.completed_at is None else True
         return {
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "is_complete": self.is_complete
+            "is_complete": is_complete_value
     }
     
-    # def to_dict(self):
-    #     return dict(
-    #         id=self.id,
-    #         title=self.title,
-    #         description=self.description,
-    #         completed_at = self.completed_at ,
-    #         is_complete =self.is_complete 
-    #     )
+ 
        
