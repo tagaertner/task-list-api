@@ -17,4 +17,19 @@ def create_goal():
         "goal": new_goal.to_dict()
     }, 201
     
+
+@goals_bp.get("")
+def get_goals():
+    goals = Goal.query.all()
+    goals_list = [goal.to_dict() for goal in goals]
+    return goals_list, 200
+
+@goals_bp.get("/<goal_id>")
+def get_goal(goal_id):
+    goal = Goal.query.get(goal_id)
     
+    return {
+        "goal": goal.to_dict()
+        }, 200
+    
+
