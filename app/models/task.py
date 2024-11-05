@@ -15,7 +15,7 @@ class Task(db.Model):
 
     
     def to_dict(self):
-    # Return only the fields expected by the test
+    
         is_complete_value = False if self.completed_at is None else True
         return {
             "id": self.id,

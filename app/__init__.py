@@ -4,6 +4,7 @@ from .db import db, migrate
 from .models import task, goal
 import os
 from app.routes.task_routes import tasks_bp
+from app.routes.goal_routes import goals_bp 
 
 
 def create_app(config=None):
@@ -23,6 +24,7 @@ def create_app(config=None):
 
     # app.register_blueprint(tasks_bp)
     app.register_blueprint(tasks_bp, url_prefix='/tasks')
+    app.register_blueprint(goals_bp,url_prefix='/goals')
     
 
     return app

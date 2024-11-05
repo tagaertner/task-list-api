@@ -3,7 +3,7 @@ from app import db
 from app.models.task import Task
 from datetime import datetime
 
-tasks_bp = Blueprint("tasks_bp", __name__, url_prefix="/tasks")  # Note: task_bp not taks_bp
+tasks_bp = Blueprint("tasks_bp", __name__, url_prefix="/tasks") 
 
 @tasks_bp.post("")
 def create_task():
