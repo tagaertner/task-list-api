@@ -9,6 +9,11 @@ goals_bp = Blueprint("goals_bp", __name__, url_prefix="/goals")
 def create_goal():
     request_body = request.get_json()
     
+    if "title" not in request_body:
+        return {
+            "details": "Invalid data"
+        }, 400 
+        
     new_goal = Goal.from_dict(request_body)
     db.session.add(new_goal)
     db.session.commit()
@@ -28,8 +33,41 @@ def get_goals():
 def get_goal(goal_id):
     goal = Goal.query.get(goal_id)
     
+    if not goal:
+        return {"message": f"goal {goal_id} not found"}, 404
     return {
         "goal": goal.to_dict()
         }, 200
     
+@ goals_bp.put("/<goal_id>")
+def update_goal(goal_id):
+    goal = Goal.query.get(goal_id)
+    if not goal:
+        return {"message": f"goal {Goal, goal_id} not found"}, 404
+    
+    request_body = request.get_json()
+    goal.title = request_body["title"]
+    
+    db.session.commit()
+    
+    return {
+        "goal": goal.to_dict()
+    }, 200
 
+@goals_bp.delete("/<goal_id>")
+def delete_goal(goal_id):
+    goal = Goal.query.get(goal_id)
+    if not goal:
+        return {"message": f"goal {goal_id} not found"}, 404
+    
+    # Store goal info for response message
+    goal_id = goal.id
+    goal_title = goal.title
+    
+    # Delete the goal
+    db.session.delete(goal)
+    db.session.commit()
+    
+    return {
+        "details": f'Goal {goal_id} "{goal_title}" successfully deleted'
+    }, 200

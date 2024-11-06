@@ -90,7 +90,7 @@ def one_goal(app):
     new_goal = Goal(title="Build a habit of going outside daily")
     db.session.add(new_goal)
     db.session.commit()
-
+    return new_goal.to_dict() 
 
 # This fixture gets called in every test that
 # references "one_task_belongs_to_one_goal"
