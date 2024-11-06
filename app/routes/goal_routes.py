@@ -39,11 +39,11 @@ def get_goal(goal_id):
         "goal": goal.to_dict()
         }, 200
     
-@ goals_bp.put("/<goal_id>")
+@goals_bp.put("/<goal_id>")
 def update_goal(goal_id):
     goal = Goal.query.get(goal_id)
     if not goal:
-        return {"message": f"goal {Goal, goal_id} not found"}, 404
+        return {"message": f"goal { goal_id} not found"}, 404
     
     request_body = request.get_json()
     goal.title = request_body["title"]
@@ -71,3 +71,6 @@ def delete_goal(goal_id):
     return {
         "details": f'Goal {goal_id} "{goal_title}" successfully deleted'
     }, 200
+    
+
+
