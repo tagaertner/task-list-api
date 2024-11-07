@@ -48,8 +48,13 @@ def get_task(task_id):
     if not task:
         return {"message": f"task {task_id} not found"}, 404
 
-    return {"task": task.to_dict()}, 200  
-
+    if task.goal_id is not None:
+        return {
+            "task": task.to_dict_with_goal()
+        }, 200
+    return {
+        "task": task.to_dict()
+        }, 200
 
 @tasks_bp.patch("/<task_id>/mark_complete")
 def mark_complete(task_id):
