@@ -70,7 +70,6 @@ def mark_complete(task_id):
         task.is_complete = True
         db.session.commit()
         
-        
         slack_token = os.environ.get("SLACK_TOKEN")
         headers = {"Authorization': f'Bearer {slack_token}"}
         payload = {
@@ -83,7 +82,6 @@ def mark_complete(task_id):
             json=payload
         )
 
-    
     return {"task": task.to_dict()}, 200
 
 @tasks_bp.patch("/<task_id>/mark_incomplete")

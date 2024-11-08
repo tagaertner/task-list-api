@@ -3,6 +3,7 @@ from ..db import db
 from datetime import datetime
 from app import db
 from typing import List
+from .task import Task
 
 class Goal(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

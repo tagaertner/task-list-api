@@ -55,7 +55,6 @@ def get_goal_tasks(goal_id):
         "tasks": tasks
     }, 200
     
-
 @goals_bp.post("/<goal_id>/tasks")
 def add_tasks_to_goal(goal_id):
     # Get the goal
@@ -63,17 +62,14 @@ def add_tasks_to_goal(goal_id):
     if not goal:
         return {"message": f"goal {goal_id} not found"}, 404
 
-    # Get request data
     request_body = request.get_json()
     task_ids = request_body.get("task_ids", [])
 
     # Get all tasks with the provided IDs
     tasks = Task.query.filter(Task.id.in_(task_ids)).all()
     
-    # Update each task's goal
     for task in tasks:
         task.goal_id = goal.id
-
 
     db.session.commit()
 
@@ -103,7 +99,6 @@ def delete_goal(goal_id):
     if not goal:
         return {"message": f"goal {goal_id} not found"}, 404
     
-    # Store goal info for response message
     goal_id = goal.id
     goal_title = goal.title
     

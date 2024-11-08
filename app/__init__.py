@@ -8,7 +8,6 @@ from app.routes.goal_routes import goals_bp
 from dotenv import load_dotenv
 load_dotenv()
 
-
 def create_app(config=None):
     app = Flask(__name__)
 
@@ -28,5 +27,4 @@ def create_app(config=None):
     app.register_blueprint(tasks_bp, url_prefix='/tasks')
     app.register_blueprint(goals_bp,url_prefix='/goals')
     
-
     return app
