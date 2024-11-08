@@ -8,14 +8,14 @@ from app.models.task import Task
 from app.models.goal import Goal
 from datetime import datetime
 
-load_dotenv()
 
 @pytest.fixture
 def app():
     # create the app with a test configuration
     test_config = {
         "TESTING": True,
-        "SQLALCHEMY_DATABASE_URI": os.environ.get('SQLALCHEMY_TEST_DATABASE_URI')
+        "SQLALCHEMY_DATABASE_URI": os.environ.get('SQLALCHEMY_TEST_DATABASE_URI'),
+        "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"  
     }
     app = create_app(test_config)
 
@@ -103,3 +103,5 @@ def one_task_belongs_to_one_goal(app, one_goal, one_task):
     goal = Goal.query.first()
     goal.tasks.append(task)
     db.session.commit()
+
+
