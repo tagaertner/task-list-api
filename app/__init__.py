@@ -27,4 +27,8 @@ def create_app(config=None):
     app.register_blueprint(tasks_bp, url_prefix='/tasks')
     app.register_blueprint(goals_bp,url_prefix='/goals')
     
+    @app.route('/')
+    def home():
+        return {"message": "Welcome to Task API"}, 200
+    
     return app

@@ -4,7 +4,6 @@ from datetime import datetime
 from app import db
 from typing import Optional
 class Task(db.Model):
-    __tablename__ = "task_list_api_development"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     title: Mapped[str]
     description: Mapped[str]
