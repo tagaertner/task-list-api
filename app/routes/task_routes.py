@@ -18,7 +18,7 @@ def create_task():
         title=request_body["title"],
         description=request_body["description"],
         completed_at=None,  
-        is_complete=False   
+        # is_complete=False   
     )
     
     db.session.add(new_task)
@@ -64,9 +64,8 @@ def mark_complete(task_id):
     if not task:
         return {"message": f"Task {task_id} not found"}, 404
     
-    if not task.is_complete:
+    if task.completed_at is None:
         task.completed_at = datetime.now()
-        task.is_complete = True
         db.session.commit()
         
         slack_token = os.environ.get("SLACK_TOKEN")
@@ -91,7 +90,6 @@ def mark_incomplete(task_id):
         return {"message": f"Task {task_id} not found"}, 404
     
     task.completed_at = None
-    task.is_complete = False
     db.session.commit()
     
     return {"task": task.to_dict()}, 200
