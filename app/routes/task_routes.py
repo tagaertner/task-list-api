@@ -28,7 +28,6 @@ def create_task():
 
 @tasks_bp.get("")
 def get_tasks():
-    tasks = Task.query.all()
     sort_param = request.args.get("sort")
     
     sort_options ={
@@ -45,7 +44,7 @@ def get_tasks():
 
 @tasks_bp.get("/<task_id>")
 def get_task(task_id):
-    task = Task.query.get(task_id)
+    task = db.session.get(Task, task_id)
 
     if not task:
         return {"message": f"task {task_id} not found"}, 404
@@ -60,7 +59,7 @@ def get_task(task_id):
 
 @tasks_bp.patch("/<task_id>/mark_complete")
 def mark_complete(task_id):
-    task = Task.query.get(int(task_id))
+    task = db.session.get(Task, int(task_id))
     
     if not task:
         return {"message": f"Task {task_id} not found"}, 404
@@ -86,7 +85,7 @@ def mark_complete(task_id):
 
 @tasks_bp.patch("/<task_id>/mark_incomplete")
 def mark_incomplete(task_id):
-    task = Task.query.get(int(task_id))
+    task = db.session.get(Task, int(task_id))
     
     if not task:
         return {"message": f"Task {task_id} not found"}, 404
@@ -99,7 +98,7 @@ def mark_incomplete(task_id):
     
 @tasks_bp.put("/<task_id>")
 def update_task(task_id):
-    task = Task.query.get(task_id)
+    task = db.session.get(Task, task_id)
     
     if not task:
         return {"message": f"Task {task_id} not found"}, 404
@@ -114,7 +113,7 @@ def update_task(task_id):
 
 @tasks_bp.delete("/<task_id>")
 def delete_task(task_id):
-    task = Task.query.get(task_id)
+    task = db.session.get(Task,task_id)
     
     if not task:
         return {"message": f"Task {task_id} not found"}, 404
