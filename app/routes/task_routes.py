@@ -64,21 +64,20 @@ def mark_complete(task_id):
     if not task:
         return {"message": f"Task {task_id} not found"}, 404
     
-    if task.completed_at is None:
-        task.completed_at = datetime.now()
-        db.session.commit()
-        
-        slack_token = os.environ.get("SLACK_TOKEN")
-        headers = {"Authorization': f'Bearer {slack_token}"}
-        payload = {
-            "channel": "api-task-channel",
-            "text": f"Someone just completed the task {task.title}"
-        }
-        requests.post(
-            "https://slack.com/api/chat.postMessage",
-            headers=headers,
-            json=payload
-        )
+    task.completed_at = datetime.now()
+    db.session.commit()
+    
+    slack_token = os.environ.get("SLACK_TOKEN")
+    headers = {"Authorization': f'Bearer {slack_token}"}
+    payload = {
+        "channel": "api-task-channel",
+        "text": f"Someone just completed the task {task.title}"
+    }
+    requests.post(
+        "https://slack.com/api/chat.postMessage",
+        headers=headers,
+        json=payload
+    )
 
     return {"task": task.to_dict()}, 200
 
